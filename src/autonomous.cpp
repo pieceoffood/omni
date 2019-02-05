@@ -14,23 +14,6 @@
 
 
 void autonomous() {
-/*
-  pros::Controller master(pros::E_CONTROLLER_MASTER);
-  //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
-  pros::Motor leftfront(1, true);
-  pros::Motor leftback(2, true);
-  pros::Motor rightfront(3);
-  pros::Motor rightback(4);
-  pros::Motor liftleft(5);
-  pros::Motor liftright(6, true);
-*/
-  leftfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-  rightfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-  leftback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-  rightback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-  liftleft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-  liftright.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
 
   leftfront.move_absolute(100, 100); // Moves 100 units forward
   leftback.move_absolute(100, 100); //

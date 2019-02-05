@@ -11,6 +11,7 @@ extern pros::Motor intake     ;
 extern pros::Motor catapult   ;
 extern pros::Motor flipper    ;
 extern pros::Controller master;
-extern pros::ADIAnalogIn potentiometer;
-
+extern pros::ADIAnalogIn potent;
+extern pros::ADIAnalogIn bumper;
+extern pros::ADIAnalogIn potent; //potentiometer
 #endif

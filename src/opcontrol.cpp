@@ -17,46 +17,34 @@
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-/*
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-  //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
-  pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor leftback   (2, pros::E_MOTOR_GEARSET_18, true);
-  pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor rightback  (4, pros::E_MOTOR_GEARSET_18);
-  pros::Motor liftleft   (5);
-  pros::Motor liftright  (6, true);
-	pros::Motor flipper    (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-*/
-  leftfront.set_encoder_units  (pros::E_MOTOR_ENCODER_COUNTS);
-  rightfront.set_encoder_units (pros::E_MOTOR_ENCODER_COUNTS);
-  leftback.set_encoder_units   (pros::E_MOTOR_ENCODER_COUNTS);
-  rightback.set_encoder_units  (pros::E_MOTOR_ENCODER_COUNTS);
-  flipper.set_encoder_units    (pros::E_MOTOR_ENCODER_COUNTS);
-  liftleft.set_brake_mode      (pros::E_MOTOR_BRAKE_HOLD);
-  liftright.set_brake_mode     (pros::E_MOTOR_BRAKE_HOLD);
 
 	int intakecount = 0; // count how many time of button is pressed
 	int flippernow;
+  int left ;
+  int right ;
 
 	while (true) {
+
+
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 
 		// Print to the 0th line of the emulated LCD screen
-		pros::lcd::print(0, "Joystick val: %d", master.get_analog(ANALOG_RIGHT_Y));
+    pros::lcd::print(1, "Joystick right: %d", right);
 		pros::lcd::print(3, "flipper: %d", flipper.get_position());
 		master.print(0, 0, "Counter: %d", flipper.get_position());
 
-		int left ;
-		int right ;
 
-    // use cubic root of the Joystick input to improve operatable.
+    // use cubic function of the Joystick input to improve operatable.
     // add dead zone of 10. Joystick move between -10 to 10 (in -127 to 127 range) will not move motor
-    left  = (abs(master.get_analog  (ANALOG_LEFT_Y))<10) ? 0 : cbrt(master.get_analog  (ANALOG_LEFT_Y));
-    right = (abs(master.get_analog  (ANALOG_LEFT_Y))<10) ? 0 : cbrt(master.get_analog (ANALOG_RIGHT_Y));
-
+    left  = (abs(master.get_analog  (ANALOG_LEFT_Y))<10  )? 0 : pow(master.get_analog (ANALOG_LEFT_Y), 3);
+    //right = (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 )? 0 : pow((master.get_analog (ANALOG_RIGHT_Y),3);
+    if (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 ) {
+      right=0;
+    } else {
+      right = pow(master.get_analog (ANALOG_RIGHT_Y),3);
+    }
 		leftfront.move  (left);
 		leftback.move   (left);
 		rightfront.move (right);
@@ -64,12 +52,13 @@ void opcontrol() {
 
 // arm lift
 		if (master.get_digital   (DIGITAL_L1)) {
-			liftleft.move_velocity (-100);
-			liftright.move_velocity(-100);
+			liftleft.move_velocity (200);
+			liftright.move_velocity(200);
 		}
-		else if (master.get_digital(DIGITAL_L2)) {
-			liftleft.move_velocity(40);
-			liftright.move_velocity(40);
+		else if (master.get_digital(DIGITAL_L2) and bumper.get_value() == 0 ) {
+      // low dowm arm until hit the bumper
+			liftleft.move_velocity(-100);
+			liftright.move_velocity(-100);
 		}
 		else {
 			liftleft.move_velocity(0);
@@ -86,13 +75,12 @@ void opcontrol() {
     };
 // catapult
     if (master.get_digital(DIGITAL_R2)) {
-      while ( potentiometer.get_value() < 4095 ) {
+      while ( potent.get_value() < 4095 ) {
         catapult.move(200);
         // use potentiometer to control how long/far the catapult motor move
       }
 
     }
-
 
 		pros::delay(20);
 	}

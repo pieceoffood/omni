@@ -16,15 +16,16 @@
   pros::ADIAnalogIn potentiometer (1);
 
 
+	static lv_res_t btn_click_action(lv_obj_t * btn)
+{
+    uint8_t id = lv_obj_get_free_num(btn);
 
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
+    printf("Button %d is released\n", id);
+
+    /* The button is released.
+     * Make something here */
+
+    return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
 /**
@@ -34,14 +35,62 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello, Team 35216B is the best!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
-
-
+	leftfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+	rightfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+	leftback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+	rightback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
 	liftleft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	liftright.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+
+
+
+/*Create a title label*/
+lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
+lv_label_set_text(label, "auto selection");
+lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, 0, 5);
+
+/*Create a normal button*/
+lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
+lv_cont_set_fit(btn1, true, true); /*Enable resizing horizontally and vertically*/
+lv_obj_align(btn1, label, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+lv_obj_set_free_num(btn1, 1);   /*Set a unique number for the button*/
+lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_click_action);
+
+/*Add a label to the button*/
+label = lv_label_create(btn1, NULL);
+lv_label_set_text(label, "Blue Front");
+
+/*Copy the button and set toggled state. (The release action is copied too)*/
+lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), btn1);
+lv_obj_align(btn2, btn1, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+lv_btn_set_state(btn2, LV_BTN_STATE_TGL_REL);  /*Set toggled state*/
+lv_obj_set_free_num(btn2, 2);               /*Set a unique number for the button*/
+
+/*Add a label to the toggled button*/
+label = lv_label_create(btn2, NULL);
+lv_label_set_text(label, "Blue Back");
+
+/*Copy the button and set inactive state.*/
+lv_obj_t * btn3 = lv_btn_create(lv_scr_act(), btn1);
+lv_obj_align(btn3, btn2, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+lv_btn_set_state(btn3, LV_BTN_STATE_INA);   /*Set inactive state*/
+lv_obj_set_free_num(btn3, 3);               /*Set a unique number for the button*/
+
+/*Add a label to the inactive button*/
+label = lv_label_create(btn3, NULL);
+lv_label_set_text(label, "Red Front");
+
+/*Copy the button and set inactive state.*/
+lv_obj_t * btn4 = lv_btn_create(lv_scr_act(), btn1);
+lv_obj_align(btn4, btn3, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+lv_btn_set_state(btn4, LV_BTN_STATE_INA);   /*Set inactive state*/
+lv_obj_set_free_num(btn4, 4);               /*Set a unique number for the button*/
+
+/*Add a label to the inactive button*/
+label = lv_label_create(btn4, NULL);
+lv_label_set_text(label, "Red Back");
 
 }
 

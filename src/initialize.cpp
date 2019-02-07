@@ -8,12 +8,13 @@
   pros::Motor leftback   (2, pros::E_MOTOR_GEARSET_18, true);
   pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
   pros::Motor rightback  (4, pros::E_MOTOR_GEARSET_18);
-  pros::Motor liftleft   (5);
-  pros::Motor liftright  (6, true);
-	pros::Motor intake     (11, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor catapult   (12, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+  pros::Motor liftleft   (11);
+  pros::Motor liftright  (12, true);
+	pros::Motor intake     (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+  pros::Motor catapult   (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 	pros::Motor flipper    (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::ADIAnalogIn potentiometer (1);
+	pros::ADIAnalogIn bumper (10);
+	pros::ADIAnalogIn potent (9); //potentiameter
 
 
 	static lv_res_t btn_click_action(lv_obj_t * btn)

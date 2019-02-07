@@ -24,22 +24,28 @@ void opcontrol() {
   int right ;
 
 	while (true) {
+
+
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 
 		// Print to the 0th line of the emulated LCD screen
-		pros::lcd::print(0, "Joystick val: %d", master.get_analog(ANALOG_RIGHT_Y));
+    pros::lcd::print(1, "Joystick right: %d", right);
 		pros::lcd::print(3, "flipper: %d", flipper.get_position());
 		master.print(0, 0, "Counter: %d", flipper.get_position());
 
 
 
-    // use cubic root of the Joystick input to improve operatable.
+    // use cubic function of the Joystick input to improve operatable.
     // add dead zone of 10. Joystick move between -10 to 10 (in -127 to 127 range) will not move motor
-    left  = (abs(master.get_analog  (ANALOG_LEFT_Y))<10) ? 0 : cbrt(master.get_analog  (ANALOG_LEFT_Y));
-    right = (abs(master.get_analog  (ANALOG_LEFT_Y))<10) ? 0 : cbrt(master.get_analog (ANALOG_RIGHT_Y));
-
+    left  = (abs(master.get_analog  (ANALOG_LEFT_Y))<10  )? 0 : pow(master.get_analog (ANALOG_LEFT_Y), 3);
+    //right = (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 )? 0 : pow((master.get_analog (ANALOG_RIGHT_Y),3);
+    if (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 ) {
+      right=0;
+    } else {
+      right = pow(master.get_analog (ANALOG_RIGHT_Y),3);
+    }
 		leftfront.move  (left);
 		leftback.move   (left);
 		rightfront.move (right);
@@ -47,12 +53,13 @@ void opcontrol() {
 
 // arm lift
 		if (master.get_digital   (DIGITAL_L1)) {
-			liftleft.move_velocity (-100);
-			liftright.move_velocity(-100);
+			liftleft.move_velocity (200);
+			liftright.move_velocity(200);
 		}
-		else if (master.get_digital(DIGITAL_L2)) {
-			liftleft.move_velocity(40);
-			liftright.move_velocity(40);
+		else if (master.get_digital(DIGITAL_L2) and bumper.get_value() == 0 ) {
+      // low dowm arm until hit the bumper
+			liftleft.move_velocity(-100);
+			liftright.move_velocity(-100);
 		}
 		else {
 			liftleft.move_velocity(0);

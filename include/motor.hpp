@@ -13,5 +13,5 @@ extern pros::Motor flipper    ;
 extern pros::Controller master;
 extern pros::ADIAnalogIn potent;
 extern pros::ADIAnalogIn bumper;
-extern pros::ADIAnalogIn potent; //potentiometer
+extern pros::ADIAnalogIn potentiameter; //potentiameter
 #endif

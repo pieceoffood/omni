@@ -14,7 +14,7 @@
   pros::Motor catapult   (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 	pros::Motor flipper    (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 	pros::ADIAnalogIn bumper (10);
-	pros::ADIAnalogIn potent (9); //potentiameter
+	pros::ADIAnalogIn potentiameter (9); //potentiameter
 
 
 	static lv_res_t btn_click_action(lv_obj_t * btn)

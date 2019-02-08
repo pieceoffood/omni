@@ -19,23 +19,16 @@
 void opcontrol() {
 
 	int intakecount = 0; // count how many time of button is pressed
-	int flippernow;
   int left ;
   int right ;
 
 	while (true) {
 
 
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-
-		// Print to the 0th line of the emulated LCD screen
-    pros::lcd::print(1, "Joystick right: %d", right);
-		pros::lcd::print(3, "flipper: %d", flipper.get_position());
-		master.print(0, 0, "Counter: %d", flipper.get_position());
-
-
+		// Print to the 0 -2 line of controller screen [0-14]
+		master.print(0, 0, "Joystick val: %d", master.get_analog(ANALOG_RIGHT_Y));
+    master.print(1, 0, "potentiameter: %d", potentiameter.get_value());
+		master.print(2, 0, "flipper: %d", flipper.get_position());
 
     // use cubic function of the Joystick input to improve operatable.
     // add dead zone of 10. Joystick move between -10 to 10 (in -127 to 127 range) will not move motor
@@ -76,9 +69,9 @@ void opcontrol() {
     };
 // catapult
     if (master.get_digital(DIGITAL_R2)) {
-      while ( potentiometer.get_value() < 4095 ) {
+      while ( potentiameter.get_value() < 4095 ) {
         catapult.move_velocity(200);
-        // use potentiometer to control how long/far the catapult motor move
+        // use potentiameter to control how long/far the catapult motor move
       }
 
     }

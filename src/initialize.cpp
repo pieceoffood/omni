@@ -4,10 +4,10 @@
 
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
   //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
-  pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor leftback   (2, pros::E_MOTOR_GEARSET_18, true);
-  pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor rightback  (4, pros::E_MOTOR_GEARSET_18);
+  pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+  pros::Motor leftback   (2, pros::E_MOTOR_GEARSET_18, false);
+  pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+  pros::Motor rightback  (4, pros::E_MOTOR_GEARSET_18, true);
   pros::Motor liftleft   (11);
   pros::Motor liftright  (12, true);
 	pros::Motor intake     (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -45,12 +45,10 @@ void initialize() {
 	liftright.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
 
-
-
 /*Create a title label*/
 lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
 lv_label_set_text(label, "auto selection");
-lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, 0, 5);
+lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 5);
 
 /*Create a normal button*/
 lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
@@ -75,8 +73,8 @@ lv_label_set_text(label, "Blue Back");
 
 /*Copy the button and set inactive state.*/
 lv_obj_t * btn3 = lv_btn_create(lv_scr_act(), btn1);
-lv_obj_align(btn3, btn2, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-lv_btn_set_state(btn3, LV_BTN_STATE_INA);   /*Set inactive state*/
+lv_obj_align(btn3, btn1, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
+lv_btn_set_state(btn3, LV_BTN_STATE_REL);   /*Set inactive state*/
 lv_obj_set_free_num(btn3, 3);               /*Set a unique number for the button*/
 
 /*Add a label to the inactive button*/
@@ -85,8 +83,8 @@ lv_label_set_text(label, "Red Front");
 
 /*Copy the button and set inactive state.*/
 lv_obj_t * btn4 = lv_btn_create(lv_scr_act(), btn1);
-lv_obj_align(btn4, btn3, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-lv_btn_set_state(btn4, LV_BTN_STATE_INA);   /*Set inactive state*/
+lv_obj_align(btn4, btn2, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
+lv_btn_set_state(btn4, LV_BTN_STATE_REL);   /*Set inactive state*/
 lv_obj_set_free_num(btn4, 4);               /*Set a unique number for the button*/
 
 /*Add a label to the inactive button*/

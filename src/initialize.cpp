@@ -1,8 +1,6 @@
 #include "main.h"
 #include "motor.hpp"
 
-  static int automode;
-
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
   //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
   pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -23,7 +21,7 @@
     uint8_t id = lv_obj_get_free_num(btn);
 
     printf("Button %d is released\n", id);
-
+    automode= id;
     /* The button is released.
      * Make something here */
 
@@ -67,6 +65,7 @@ lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), btn1);
 lv_obj_align(btn2, btn1, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
 lv_btn_set_state(btn2, LV_BTN_STATE_TGL_REL);  /*Set toggled state*/
 lv_obj_set_free_num(btn2, 2);               /*Set a unique number for the button*/
+lv_btn_set_action(btn2, LV_BTN_ACTION_CLICK, btn_click_action);
 
 /*Add a label to the toggled button*/
 label = lv_label_create(btn2, NULL);
@@ -77,6 +76,7 @@ lv_obj_t * btn3 = lv_btn_create(lv_scr_act(), btn1);
 lv_obj_align(btn3, btn1, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
 lv_btn_set_state(btn3, LV_BTN_STATE_REL);   /*Set inactive state*/
 lv_obj_set_free_num(btn3, 3);               /*Set a unique number for the button*/
+lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, btn_click_action);
 
 /*Add a label to the inactive button*/
 label = lv_label_create(btn3, NULL);
@@ -87,6 +87,7 @@ lv_obj_t * btn4 = lv_btn_create(lv_scr_act(), btn1);
 lv_obj_align(btn4, btn2, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
 lv_btn_set_state(btn4, LV_BTN_STATE_REL);   /*Set inactive state*/
 lv_obj_set_free_num(btn4, 4);               /*Set a unique number for the button*/
+lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
 
 /*Add a label to the inactive button*/
 label = lv_label_create(btn4, NULL);

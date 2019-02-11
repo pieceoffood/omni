@@ -1,6 +1,8 @@
 #include "main.h"
 #include "motor.hpp"
 
+  static int automode;
+
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
   //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
   pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);

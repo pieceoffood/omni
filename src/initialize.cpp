@@ -1,7 +1,6 @@
 #include "main.h"
 #include "motor.hpp"
 
-
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
   //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
   pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
@@ -15,7 +14,7 @@
 	pros::Motor flipper    (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 	pros::ADIAnalogIn bumper (10);
 	pros::ADIAnalogIn potentiameter (9); //potentiameter
-
+  int automode;
 
 	static lv_res_t btn_click_action(lv_obj_t * btn)
 {

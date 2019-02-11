@@ -14,48 +14,50 @@
 
 
 void autonomous() {
+  int distance;
+  int speed;
+  switch (automode)  {
+    case 1: {
+      distance=300;
+      speed=100;
+      leftfront.move_relative(distance, speed); // Moves xxx units forward
+      leftback.move_relative(distance, speed); //
+      rightfront.move_relative(distance, speed); //
+      rightback.move_relative(distance, speed); //
+      break;
+    }
+    case 2: {
+      distance=-300;
+      speed=100;
+      leftfront.move_relative(distance, speed); // Moves xxx units forward
+      leftback.move_relative(distance, speed); //
+      rightfront.move_relative(distance, speed); //
+      rightback.move_relative(distance, speed); //
+      break;
+    }
 
-  leftfront.move_absolute(100, 100); // Moves 100 units forward
-  leftback.move_absolute(100, 100); //
-  rightfront.move_absolute(100, 100); //
-  rightback.move_absolute(100, 100); //
+    case 3:  {
+      distance=790;
+      speed=100;
+      leftfront.move_relative(-distance, speed); // left turn
+      leftback.move_relative(-distance, speed); //
+      rightfront.move_relative(distance, speed); //
+      rightback.move_relative(distance, speed); //
+      break;
+    }
+    case 4: {
+      distance=-790;
+      speed=100;
+      leftfront.move_relative(-distance, speed); // Right turn
+      leftback.move_relative(-distance, speed); //
+      rightfront.move_relative(distance, speed); //
+      rightback.move_relative(distance, speed); //
+      break;
+    }
+    default : {
 
-  leftfront.set_zero_position(80);//Sets the zero position for the motor in its encoder units.
-  leftback.set_zero_position(80);//Sets the zero position for the motor in its encoder units.
-  rightfront.set_zero_position(80);//Sets the zero position for the motor in its encoder units.
-  rightback.set_zero_position(80);//Sets the zero position for the motor in its encoder units.
+    }
 
-  leftfront.move_absolute(100, 100); // Moves 120 units forward
-  leftback.move_absolute(100, 100); // Moves 120 units forward
-  rightfront.move_absolute(100, 100); // Moves 120 units forward
-  rightback.move_absolute(100, 100); // Moves 120 units forward
-  pros::delay(2);
-
-  leftfront.move_absolute(100, 100); // Moves 100 units forward
-  leftback.move_absolute(100, 100); //
-  rightfront.move_absolute(100, 100); //
-  rightback.move_absolute(100, 100); //
-  while (!(
-            (leftfront.get_position() < 105) && (leftfront.get_position() > 95) &&
-            (rightfront.get_position() < 105) && (rightfront.get_position() > 95)
-          )) {
-    // Continue running this loop as long as the motor is not within +-5 units of its goal
-    pros::delay(2);
-  }
-
-
-  leftfront.tare_position(); //Sets the “absolute” zero position of the motor to its current position.
-  rightfront.tare_position();//Sets the “absolute” zero position of the motor to its current position.
-  leftfront.move_absolute(100, 100); // Moves 100 units forward
-  leftback.move_absolute(100, 100); //
-  rightfront.move_absolute(100, 100); //
-  rightback.move_absolute(100, 100); //
-  while (!(
-            (leftfront.get_position() < 105) && (leftfront.get_position() > 95) &&
-            (rightfront.get_position() < 105) && (rightfront.get_position() > 95)
-          )) {
-    // Continue running this loop as long as the motor is not within +-5 units of its goal
-    pros::delay(2);
   }
 
 }

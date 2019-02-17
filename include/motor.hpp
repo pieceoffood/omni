@@ -5,13 +5,19 @@ extern pros::Motor leftfront  ;
 extern pros::Motor leftback   ;
 extern pros::Motor rightfront ;
 extern pros::Motor rightback  ;
-extern pros::Motor liftleft   ;
-extern pros::Motor liftright  ;
-extern pros::Motor intake     ;
+extern pros::Motor lift   ;
+extern pros::Motor claw  ;
+extern pros::Motor ballintake     ;
 extern pros::Motor catapult   ;
 extern pros::Motor flipper    ;
-extern pros::Controller master;
-extern pros::ADIAnalogIn bumper;
-extern pros::ADIAnalogIn potentiameter; //potentiameter
+extern pros::Controller master;         // master control
+extern pros::Controller partner;        //partner control
+extern pros::ADIAnalogIn bumper;        // not use yet
+extern pros::ADIAnalogIn potentiameter; //potentiameter for claw
+extern pros::ADIAnalogIn ballshooterp; //potentiameter for catapult
+extern pros::ADIDigitalIn limitswitch ; //limitswitch for arm lift
+extern pros::ADIDigitalIn limitswitchball ; //limitswitch for ball shoot
+extern pros::ADIDigitalIn blue ;        // use jumper to select side blue=1 and red=0
+extern pros::ADIDigitalIn back ;       // use jumper to select front=0 and back=1
 extern int automode;
 #endif

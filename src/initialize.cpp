@@ -1,23 +1,28 @@
 #include "main.h"
 #include "motor.hpp"
 
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-  //pros::Motor motor (8, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
-  pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor leftback   (2, pros::E_MOTOR_GEARSET_18, false);
-  pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor rightback  (4, pros::E_MOTOR_GEARSET_18, true);
-  pros::Motor liftleft   (11);
-  pros::Motor liftright  (12, true);
-	pros::Motor intake     (5, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-  pros::Motor catapult   (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-	pros::Motor flipper    (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-	pros::ADIAnalogIn bumper (10);
-	pros::ADIAnalogIn potentiameter (9); //potentiameter
-  int automode;
+pros::Controller master  (pros::E_CONTROLLER_MASTER);
+pros::Controller partner (pros::E_CONTROLLER_PARTNER);
+pros::Motor leftfront  (7,  pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor leftback   (8,  pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightfront (9,  pros::E_MOTOR_GEARSET_18, true,  pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightback  (10, pros::E_MOTOR_GEARSET_18, true,  pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor lift       (20, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor claw       (12, pros::E_MOTOR_GEARSET_18, true,  pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor ballintake (19, pros::E_MOTOR_GEARSET_18, false);
+pros::Motor catapult   (13, pros::E_MOTOR_GEARSET_36, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::ADIDigitalIn limitswitch  (1);
+pros::ADIAnalogIn potentiameter (2);
+pros::ADIAnalogIn ballshooterp  (3);
+pros::ADIDigitalIn limitswitchball(4);
+pros::ADIDigitalIn blue (7); // use jumper to select side blue=1 and red=0
+pros::ADIDigitalIn back (8); // use jumper to select front=0 and back=1
 
-	static lv_res_t btn_click_action(lv_obj_t * btn)
-{
+
+int automode;
+
+static lv_res_t btn_click_action(lv_obj_t * btn)
+	{
     uint8_t id = lv_obj_get_free_num(btn);
 
     printf("Button %d is released\n", id);
@@ -36,12 +41,9 @@
  */
 void initialize() {
 
-	leftfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-	rightfront.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-	leftback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-	rightback.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-	liftleft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	liftright.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	lift.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
+  claw.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
+  catapult.set_brake_mode      (pros::E_MOTOR_BRAKE_HOLD);
 
 
 /*Create a title label*/

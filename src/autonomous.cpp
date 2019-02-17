@@ -14,7 +14,7 @@
 
 
 void autonomous() {
-  int distance;
+  double distance;
   int speed;
   switch (automode)  {
     case 1: {

@@ -26,55 +26,19 @@ void opcontrol() {
 
 
 		// Print to the 0 -2 line of controller screen [0-14]
-		master.print(0, 0, "Joystick val: %d", master.get_analog(ANALOG_RIGHT_Y));
+		master.print(0, 0, "Joystick val: %d", automode);
     master.print(1, 0, "potentiameter: %d", potentiameter.get_value());
-		master.print(2, 0, "flipper: %d", flipper.get_position());
+		master.print(2, 0, "flipper: %d", claw.get_position());
 
-    // use cubic function of the Joystick input to improve operatable.
-    // add dead zone of 10. Joystick move between -10 to 10 (in -127 to 127 range) will not move motor
-    left  = (abs(master.get_analog  (ANALOG_LEFT_Y))<10  )? 0 : pow(master.get_analog (ANALOG_LEFT_Y), 3);
-    //right = (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 )? 0 : pow((master.get_analog (ANALOG_RIGHT_Y),3);
-    if (abs(master.get_analog  (ANALOG_RIGHT_Y))<10 ) {
-      right=0;
-    } else {
-      right = pow(master.get_analog (ANALOG_RIGHT_Y),3);
-    }
-		leftfront.move  (left);
-		leftback.move   (left);
-		rightfront.move (right);
-		rightback.move  (right);
 
-// arm lift
-		if (master.get_digital   (DIGITAL_L1)) {
-			liftleft.move_velocity (200);
-			liftright.move_velocity(200);
-		}
-		else if (master.get_digital(DIGITAL_L2) and bumper.get_value() == 0 ) {
-      // low dowm arm until hit the bumper
-			liftleft.move_velocity(-100);
-			liftright.move_velocity(-100);
-		}
-		else {
-			liftleft.move_velocity(0);
-			liftright.move_velocity(0);
-		}
-
-// intake
+// ballintake
     // one press start spinning; press again stop spinning
     intakecount += (master.get_digital(DIGITAL_R1)); // count how many time of button is pressed
     if (intakecount % 2 ==1)  {
-      intake.move_velocity(200);
+      ballintake.move_velocity(200);
     } else {
-      intake.move_velocity(0);
+      ballintake.move_velocity(0);
     };
-// catapult
-    if (master.get_digital(DIGITAL_R2)) {
-      while ( potentiameter.get_value() < 4095 ) {
-        catapult.move_velocity(200);
-        // use potentiameter to control how long/far the catapult motor move
-      }
-
-    }
 
 		pros::delay(20);
 	}

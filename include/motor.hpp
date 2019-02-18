@@ -20,4 +20,8 @@ extern pros::ADIDigitalIn limitswitchball ; //limitswitch for ball shoot
 extern pros::ADIDigitalIn blue ;        // use jumper to select side blue=1 and red=0
 extern pros::ADIDigitalIn back ;       // use jumper to select front=0 and back=1
 extern int automode;
+extern int blueside;
+extern int backside;
+extern lv_obj_t *sw1;
+extern lv_obj_t *sw2;
 #endif

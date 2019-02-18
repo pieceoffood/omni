@@ -21,14 +21,15 @@ void opcontrol() {
 	int intakecount = 0; // count how many time of button is pressed
   int left ;
   int right ;
+	master.print(0, 0, "autoSWp: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
 
 	while (true) {
 
 
 		// Print to the 0 -2 line of controller screen [0-14]
-		master.print(0, 0, "Joystick val: %d", automode);
+
     master.print(1, 0, "potentiameter: %d", potentiameter.get_value());
-		master.print(2, 0, "flipper: %d", claw.get_position());
+		master.print(2, 0, "flipper: %8.2f", claw.get_position());
 
 
 // ballintake
@@ -40,6 +41,6 @@ void opcontrol() {
       ballintake.move_velocity(0);
     };
 
-		pros::delay(20);
+		pros::delay(200);
 	}
 }

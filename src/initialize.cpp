@@ -26,29 +26,29 @@ static lv_res_t btn_click_action(lv_obj_t * btn)
     uint8_t id = lv_obj_get_free_num(btn);
 		//lv_btn_set_style(btn, LV_BTN_STYLE_REL, &lv_style_btn_tgl_rel);
     printf("Button %d is released\n", id);
+		lv_btn_set_state(btn, LV_BTN_STATE_TGL_REL);
     automode= id;
     /* The button is released.
      * Make something here */
-
     return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
 static lv_res_t switchonoff(lv_obj_t * sw) {
-
+	uint8_t id = lv_obj_get_free_num(sw);
 	if (lv_sw_get_state(sw)) {
-		//automode =1;
+		automode =id*1 + automode;
 	} else {
-		//automode =2;
+		automode =id*0  + automode;
 	}
 	return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
-lv_obj_t * btn1;
-lv_obj_t * btn2;
-lv_obj_t * btn3;
-lv_obj_t * btn4;
-lv_obj_t *sw1;
-lv_obj_t *sw2;
+lv_obj_t* btn1;
+lv_obj_t* btn2;
+lv_obj_t* btn3;
+lv_obj_t* btn4;
+lv_obj_t* sw1;
+lv_obj_t* sw2;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -113,10 +113,12 @@ lv_sw_set_style(sw1, LV_SW_STYLE_BG, &bg_style);
 lv_sw_set_style(sw1, LV_SW_STYLE_INDIC, &indic_style);
 lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_ON, &knob_on_style);
 lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_OFF, &knob_off_style);
+lv_obj_set_free_num(sw1, 1);
 lv_obj_align(sw1, NULL, LV_ALIGN_CENTER, 0, -50);
 label = lv_label_create(sw1, NULL);
 lv_sw_off(sw1);
 lv_label_set_text(label, "Red|blue");
+lv_sw_set_action(sw1, switchonoff);
 //switchonoff(sw1);
 
 
@@ -125,11 +127,15 @@ lv_obj_t *sw2 = lv_sw_create(lv_scr_act(), sw1);
 lv_sw_on(sw2);
 lv_obj_align(sw2, NULL, LV_ALIGN_IN_LEFT_MID, 0, 50);
 label = lv_label_create(sw2, NULL);
+lv_sw_off(sw2);
+lv_obj_set_free_num(sw2, 10);
 lv_label_set_text(label, "front|back");
-//master.print(0, 0, "automodesw: %d", automode);
+lv_sw_set_action(sw2, switchonoff);
+master.print(0, 0, "automodesw: %d", automode);
 
 //automode = lv_sw_get_state(sw1) + lv_sw_get_state(sw2)*2;
-master.print(0, 0, "autoIn0: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
+//master.print(0, 0, "autoIn0: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
+
 }
 
 /**
@@ -138,7 +144,7 @@ master.print(0, 0, "autoIn0: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2))
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-
+/*
 	while(1){
 		//lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_click_action);
 		//lv_btn_set_action(btn2, LV_BTN_ACTION_CLICK, btn_click_action);
@@ -149,7 +155,7 @@ void disabled() {
 	  pros::delay(500);
 	}
 	master.print(0, 0, "autoSW2: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-
+*/
 }
 
 /**

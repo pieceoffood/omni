@@ -1,7 +1,17 @@
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
     printf("Button: %s released\n", txt);
-    if txt == "red" {
+    switch(txt) {
+      case "redfront":  automode=1;
+      case "bluefront": automode=2;
+      case "redback":   automode=3;
+      case "bluefront": automode=4;
+      case "skill":     automode=5;
+      case "no auto":   automode=6;
+      default:          automode=7;
+
+    }
+     {
     automode=1;
     } else {
     automode=-1;
@@ -11,12 +21,9 @@ static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 }
 
 /*Create a button descriptor string array*/
-static const char * btnm_map[] = {"red", "blue", "front", "back", "park", "\n",
-                           "no auto", "blank","\n",
+static const char * btnm_map[] = {"redfront", "bluefront", "redback", "blueback", "\n",
+                           "skill",  "no auto", "blank","\n",
                           };
-
-
-
 
 /*Create a default button matrix*/
 lv_obj_t * btnm1 = lv_btnm_create(lv_scr_act(), NULL);

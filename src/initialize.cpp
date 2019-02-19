@@ -20,55 +20,21 @@ pros::ADIDigitalIn blue (7); // use jumper to select side blue=1 and red=0
 pros::ADIDigitalIn back (8); // use jumper to select front=0 and back=1
 
 
-int automode;
+int automode=9;
 
-static lv_res_t btn_click_action(lv_obj_t * btn)
-	{
-    uint8_t id = lv_obj_get_free_num(btn);
-		//lv_btn_set_style(btn, LV_BTN_STYLE_REL, &lv_style_btn_tgl_rel);
-    printf("Button %d is released\n", id);
-		lv_btn_set_state(btn, LV_BTN_STATE_TGL_REL);
-		lv_btn_get_state(btn);
-    automode= id;
-    /* The button is released.
-     * Make something here */
-    return LV_RES_OK; /*Return OK if the button is not deleted*/
+static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
+{
+    printf("Button: %s released\n", txt);
+    if (strcmp(txt, "redfront"))  automode=1;
+    else if (strcmp(txt, "bluefront")) automode=2;
+    else if (strcmp(txt, "redback"))   automode=3;
+    else if (strcmp(txt, "bluefront")) automode=4;
+    else if (strcmp(txt, "skill 1"))   automode=5;
+    else if (strcmp(txt, "skill 2"))   automode=6;
+    else if (strcmp(txt, "no auto"))   automode=7;
+    else automode=8;
+    return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
-static lv_res_t btn_long_press_action(lv_obj_t * btn)
-	{
-    uint8_t id = lv_obj_get_free_num(btn);
-		//lv_btn_set_style(btn, LV_BTN_STYLE_REL, &lv_style_btn_tgl_rel);
-    printf("Button %d is released\n", id);
-		lv_btn_set_state(btn, LV_BTN_STATE_REL);
-    automode= 0;
-    /* The button is released.
-     * Make something here */
-    return LV_RES_OK; /*Return OK if the button is not deleted*/
-}
-
-static lv_res_t switchonoff(lv_obj_t * sw) {
-	uint8_t id = lv_obj_get_free_num(sw);
-	if (lv_sw_get_state(sw)) {
-		automode =id*1 + automode;
-	} else {
-		automode =id*0  + automode;
-	}
-	return LV_RES_OK; /*Return OK if the button is not deleted*/
-}
-
-
-	static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
-	{
-	    printf("Button: %s released\n", txt);
-			if (strcmp(txt,"redfront")) {
-				automode=1;
-			} else if (strcmp(txt,"bluefront")) {
-				automode=2;
-			}
-
-	    return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
-	}
-
 
 
 
@@ -90,62 +56,47 @@ void initialize() {
 	lv_label_set_text(label, "auto selection");
 	lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 5);
 
-	/*Create a normal button*/
-	lv_obj_t * btn1 = lv_btn_create(lv_scr_act(), NULL);
-	lv_cont_set_fit(btn1, true, true); /*Enable resizing horizontally and vertically*/
-	lv_obj_align(btn1, label, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-	lv_btn_set_state(btn1, LV_BTN_STATE_REL);  /*Set toggled state*/
-	lv_obj_set_free_num(btn1, 1);   /*Set a unique number for the button*/
-	lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_click_action);
-	lv_btn_set_action(btn1, LV_BTN_ACTION_LONG_PR, btn_long_press_action);
-	/*Add a label to the button*/
-	label = lv_label_create(btn1, NULL);
-	lv_label_set_text(label, "Red Front");
+  /*Create a button descriptor string array*/
+  static const char * btnm_map[] = {"redfront", "bluefront", "redback", "blueback", "\n",
+                             "skill 1",  "skill 2", "no auto" "",
+                            };
 
-	/*Copy the button and set release (The release action is copied too)*/
-	lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), btn1);
-	lv_obj_align(btn2, btn1, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-	lv_btn_set_state(btn2, LV_BTN_STATE_REL);  /*Set toggled state*/
-	lv_obj_set_free_num(btn2, 2);               /*Set a unique number for the button*/
-	//lv_btn_set_action(btn2, LV_BTN_ACTION_CLICK, btn_click_action);
-	label = lv_label_create(btn2, NULL);
-	lv_label_set_text(label, "Red Back");
+  /*Create a default button matrix*/
+  static lv_style_t style_bg;
+  lv_style_copy(&style_bg, &lv_style_plain);
+  //style_bg.body.main_color = LV_COLOR_SILVER;
+  //style_bg.body.grad_color = LV_COLOR_SILVER;
+  style_bg.body.padding.hor = 0;
+  style_bg.body.padding.ver = 0;
+  style_bg.body.padding.inner = 0;
 
-	/*Copy the button */
-	lv_obj_t * btn3 = lv_btn_create(lv_scr_act(), btn1);
-	lv_obj_align(btn3, btn1, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
-	lv_btn_set_state(btn3, LV_BTN_STATE_REL);   /*Set inactive state*/
-	lv_obj_set_free_num(btn3, 3);               /*Set a unique number for the button*/
-	//lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, btn_click_action);
-	label = lv_label_create(btn3, NULL);
-	lv_label_set_text(label, "Blue Front");
+  lv_obj_t * btnm1 = lv_btnm_create(lv_scr_act(), NULL);
+  lv_btnm_set_map(btnm1, btnm_map);
+  lv_btnm_set_action(btnm1, btnm_action);
+  lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BG, &style_bg);
+  lv_obj_set_size(btnm1, LV_HOR_RES, LV_VER_RES / 2);
+  lv_btnm_set_toggle(btnm1, true, 0);
 
-	/*Copy the button */
-	lv_obj_t * btn4 = lv_btn_create(lv_scr_act(), btn1);
-	lv_obj_align(btn4, btn2, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
-	lv_btn_set_state(btn4, LV_BTN_STATE_REL);   /*Set inactive state*/
-	lv_obj_set_free_num(btn4, 4);               /*Set a unique number for the button*/
-	//lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
-	label = lv_label_create(btn4, NULL);
-	lv_label_set_text(label, "Blue Back");
+  /*Create a new style for the button matrix back ground*/
+  /*Create 2 button styles*/
 
-	/*Copy the button */
-	lv_obj_t * btn5 = lv_btn_create(lv_scr_act(), btn1);
-	lv_obj_align(btn5, btn3, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
-	lv_btn_set_state(btn5, LV_BTN_STATE_REL);   /*Set inactive state*/
-	lv_obj_set_free_num(btn5, 5);               /*Set a unique number for the button*/
-	//lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
-	label = lv_label_create(btn5, NULL);
-	lv_label_set_text(label, "Skill 1");
+  static lv_style_t style_btn_rel;
+  static lv_style_t style_btn_pr;
+  lv_style_copy(&style_btn_rel, &lv_style_btn_rel);
+  style_btn_rel.body.main_color = LV_COLOR_MAKE(0x30, 0x30, 0x30);
+  style_btn_rel.body.grad_color = LV_COLOR_BLACK;
+  style_btn_rel.body.border.color = LV_COLOR_SILVER;
+  style_btn_rel.body.border.width = 1;
+  style_btn_rel.body.border.opa = LV_OPA_50;
+  style_btn_rel.body.radius = 0;
 
-	/*Copy the button */
-	lv_obj_t * btn6 = lv_btn_create(lv_scr_act(), btn1);
-	lv_obj_align(btn6, btn4, LV_ALIGN_OUT_RIGHT_MID, 20, 0);
-	lv_btn_set_state(btn6, LV_BTN_STATE_REL);   /*Set inactive state*/
-	lv_obj_set_free_num(btn6, 6);               /*Set a unique number for the button*/
-	//lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
-	label = lv_label_create(btn6, NULL);
-	lv_label_set_text(label, "Skill 2");
+  lv_style_copy(&style_btn_pr, &style_btn_rel);
+  style_btn_pr.body.main_color = LV_COLOR_MAKE(0x55, 0x96, 0xd8);
+  style_btn_pr.body.grad_color = LV_COLOR_MAKE(0x37, 0x62, 0x90);
+  style_btn_pr.text.color = LV_COLOR_MAKE(0xbb, 0xd5, 0xf1);
+  lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_REL, &style_btn_rel);
+  lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_TGL_PR, &style_btn_pr);
+
 
 
 

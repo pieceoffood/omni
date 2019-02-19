@@ -11,47 +11,42 @@
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-
+ void basemovement(double distance, int speed)
+ {
+   double ticks=(distance*900)/(4*M_PI);
+   leftfront.move_relative  (ticks, speed);
+   leftback.move_relative   (ticks, speed);
+   rightfront.move_relative (ticks, speed);
+   rightback.move_relative  (ticks, speed);
+ }
+ void baseturn(int left, int speed)
+ {
+   double ticks=735*left;
+   leftfront.move_relative  (-ticks, speed);
+   leftback.move_relative   (-ticks, speed);
+   rightfront.move_relative (ticks, speed);
+   rightback.move_relative  (ticks, speed);
+ }
 
 void autonomous() {
   double distance;
   int speed;
   switch (automode)  {
     case 1: {
-      distance=300;
-      speed=100;
-      leftfront.move_relative(distance, speed); // Moves xxx units forward
-      leftback.move_relative(distance, speed); //
-      rightfront.move_relative(distance, speed); //
-      rightback.move_relative(distance, speed); //
+      basemovement(12,100);
       break;
     }
     case 2: {
-      distance=-300;
-      speed=100;
-      leftfront.move_relative(distance, speed); // Moves xxx units forward
-      leftback.move_relative(distance, speed); //
-      rightfront.move_relative(distance, speed); //
-      rightback.move_relative(distance, speed); //
+      basemovement(-12,100);
       break;
     }
 
     case 3:  {
-      distance=790;
-      speed=100;
-      leftfront.move_relative(-distance, speed); // left turn
-      leftback.move_relative(-distance, speed); //
-      rightfront.move_relative(distance, speed); //
-      rightback.move_relative(distance, speed); //
+      baseturn(1, 50);//
       break;
     }
     case 4: {
-      distance=-790;
-      speed=100;
-      leftfront.move_relative(-distance, speed); // Right turn
-      leftback.move_relative(-distance, speed); //
-      rightfront.move_relative(distance, speed); //
-      rightback.move_relative(distance, speed); //
+      baseturn(-1, 50); //
       break;
     }
     default : {

@@ -22,6 +22,4 @@ extern pros::ADIDigitalIn back ;       // use jumper to select front=0 and back=
 extern int automode;
 extern int blueside;
 extern int backside;
-extern lv_obj_t *sw1;
-extern lv_obj_t *sw2;
 #endif

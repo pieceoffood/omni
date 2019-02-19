@@ -21,7 +21,7 @@ void opcontrol() {
 	int intakecount = 0; // count how many time of button is pressed
   int left ;
   int right ;
-	master.print(0, 0, "autoSWp: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
+	master.print(0, 0, "automode %d", automode);
 
 	while (true) {
 

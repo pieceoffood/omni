@@ -29,14 +29,46 @@
    rightback.move_relative  (ticks, speed);
  }
 
+
+ void moving (double distance, int speed)
+ {
+   double ticks = (distance*900)/(4*M_PI);
+   double startpoint = leftfront.get_position();
+   double error=fabs(ticks) - fabs(leftfront.get_position()-startpoint);
+   leftfront.move_relative  (ticks, speed);
+   leftback.move_relative   (ticks, speed);
+   rightfront.move_relative (ticks, speed);
+   rightback.move_relative  (ticks, speed);
+
+   while ( error>0 ) {
+     pros::delay(3);
+   }
+   pros::delay(10);
+ }
+ void turning (int left, int speed)
+ {
+   double ticks = 735*left;
+   double startpoint = leftfront.get_position();
+   double error=fabs(ticks) - fabs(leftfront.get_position()-startpoint);
+   leftfront.move_relative  (-ticks, speed);
+   leftback.move_relative   (-ticks, speed);
+   rightfront.move_relative (ticks, speed);
+   rightback.move_relative  (ticks, speed);
+
+   while ( error>0 ) {
+     pros::delay(3);
+   }
+   pros::delay(10);
+ }
+
+
 void autonomous() {
-  double distance;
-  int speed;
   redblue side=red;
   switch (automode)  {
     case 1: {
       side=red;
       basemovement(12,100);
+      basemovement(-12,100);
       break;
     }
     case 2: {
@@ -47,12 +79,12 @@ void autonomous() {
 
     case 3:  {
       side=red;
-      baseturn(1*side, 50);//
+      turning(1*side, 150);//
       break;
     }
     case 4: {
       side=blue;
-      baseturn(-1*side, 50); //
+      turning(1*side, 150); //
       break;
     }
     default : {

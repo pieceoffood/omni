@@ -19,12 +19,27 @@ pros::ADIDigitalIn limitswitchball(4);
 
 
 int automode;
-
+/*
+lv_obj_t * btn1;
+lv_obj_t * btn2;
+lv_obj_t * btn3;
+lv_obj_t * btn4;
+lv_obj_t * btn5;
+lv_obj_t * btn6;
+*/
 static lv_res_t btn_click_action(lv_obj_t * btn)
 	{
     uint8_t id = lv_obj_get_free_num(btn);
 		//lv_btn_set_style(btn, LV_BTN_STYLE_REL, &lv_style_btn_tgl_rel);
     printf("Button %d is released\n", id);
+		/*
+		lv_btn_set_state(btn1, LV_BTN_STATE_REL);
+		lv_btn_set_state(btn2, LV_BTN_STATE_REL);
+		lv_btn_set_state(btn3, LV_BTN_STATE_REL);
+		lv_btn_set_state(btn4, LV_BTN_STATE_REL);
+		lv_btn_set_state(btn5, LV_BTN_STATE_REL);
+		lv_btn_set_state(btn6, LV_BTN_STATE_REL);
+		*/
 		lv_btn_set_state(btn, LV_BTN_STATE_TGL_REL);
 		lv_btn_get_state(btn);
     automode= id;

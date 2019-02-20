@@ -44,32 +44,6 @@ static lv_res_t btn_long_press_action(lv_obj_t * btn)
     return LV_RES_OK; /*Return OK if the button is not deleted*/
 }
 
-static lv_res_t switchonoff(lv_obj_t * sw) {
-	uint8_t id = lv_obj_get_free_num(sw);
-	if (lv_sw_get_state(sw)) {
-		automode =id*1 + automode;
-	} else {
-		automode =id*0  + automode;
-	}
-	return LV_RES_OK; /*Return OK if the button is not deleted*/
-}
-
-
-	static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
-	{
-	    printf("Button: %s released\n", txt);
-			if (strcmp(txt,"redfront")) {
-				automode=1;
-			} else if (strcmp(txt,"bluefront")) {
-				automode=2;
-			}
-
-	    return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
-	}
-
-
-
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -149,9 +123,6 @@ void initialize() {
 
   master.print(0, 0, "automode: %d", automode);
 
-//automode = lv_sw_get_state(sw1) + lv_sw_get_state(sw2)*2;
-//master.print(0, 0, "autoIn0: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-
 }
 
 /**
@@ -160,18 +131,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-/*
-	while(1){
-		//lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn2, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
-		automode = lv_sw_get_state(sw1) + lv_sw_get_state(sw2)*2;
-		master.print(0, 0, "autoSW: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-	  pros::delay(500);
-	}
-	master.print(0, 0, "autoSW2: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-*/
+
 }
 
 /**
@@ -184,5 +144,5 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	//master.print(0, 0, "automode: %d", automode);
+
 }

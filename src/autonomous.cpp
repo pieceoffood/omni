@@ -32,22 +32,27 @@
 void autonomous() {
   double distance;
   int speed;
+  redblue side=red;
   switch (automode)  {
     case 1: {
+      side=red;
       basemovement(12,100);
       break;
     }
     case 2: {
+      side=blue;
       basemovement(-12,100);
       break;
     }
 
     case 3:  {
-      baseturn(1, 50);//
+      side=red;
+      baseturn(1*side, 50);//
       break;
     }
     case 4: {
-      baseturn(-1, 50); //
+      side=blue;
+      baseturn(-1*side, 50); //
       break;
     }
     default : {

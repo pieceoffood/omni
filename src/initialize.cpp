@@ -20,14 +20,26 @@ pros::ADIDigitalIn limitswitchball(4);
 
 
 int automode=8;
-
+redblue side;
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
     printf("Button: %s released\n", txt);
-    if (strcmp(txt, "redfront"))  automode=1;
-    else if (strcmp(txt, "bluefront")) automode=2;
-    else if (strcmp(txt, "redback"))   automode=3;
-    else if (strcmp(txt, "bluefront")) automode=4;
+    if (strcmp(txt, "redfront"))  {
+      automode=1;
+      side=red;
+    }
+    else if (strcmp(txt, "bluefront")) {
+      automode=2;
+      side=blue;
+    }
+    else if (strcmp(txt, "redback")) {
+      automode=3;
+      side=red;
+    }
+    else if (strcmp(txt, "bluefront")) {
+      automode=4;
+      side=blue;
+    }
     else if (strcmp(txt, "skill 1"))   automode=5;
     else if (strcmp(txt, "skill 2"))   automode=6;
     else if (strcmp(txt, "no auto"))   automode=7;

@@ -1,5 +1,5 @@
-#ifndef MOTOR_H
-#define MOTOR_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 extern pros::Motor leftfront  ;
 extern pros::Motor leftback   ;
@@ -17,9 +17,5 @@ extern pros::ADIAnalogIn potentiameter; //potentiameter for claw
 extern pros::ADIAnalogIn ballshooterp; //potentiameter for catapult
 extern pros::ADIDigitalIn limitswitch ; //limitswitch for arm lift
 extern pros::ADIDigitalIn limitswitchball ; //limitswitch for ball shoot
-extern pros::ADIDigitalIn blue ;        // use jumper to select side blue=1 and red=0
-extern pros::ADIDigitalIn back ;       // use jumper to select front=0 and back=1
 extern int automode;
-extern int blueside;
-extern int backside;
 #endif

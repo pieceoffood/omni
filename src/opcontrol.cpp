@@ -1,8 +1,15 @@
 #include "main.h"
-#include "motor.hpp"
-
-// prosv5 upload --slot 5
-//prosv5 v5 rm-file slot_4.bin --erase-all
+#include "config.hpp"
+#include <iomanip>
+/*
+cd (change directory)
+cd .. (go up one level)
+prosv5 make clean (clean everything)
+prosv5 build-compile-commands (compile the code)
+prosv5 upload --slot 5 (upload the program to V5 slot 5)
+prosv5 v5 rm-all
+prosv5 v5 rm-file slot_4.bin --erase-all
+*/
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -17,11 +24,44 @@
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	std::cout << std::fixed;
+  std::cout << std::setprecision(1);
+	char mytext[64];
+
 
 	int intakecount = 0; // count how many time of button is pressed
   int left ;
   int right ;
 	master.print(0, 0, "automode %d", automode);
+
+	/*Create a screen*/
+	lv_obj_t * scr = lv_obj_create(NULL, NULL);
+	lv_scr_load(scr);                                   /*Load the screen*/
+
+	lv_obj_t * title = lv_label_create(lv_scr_act(), NULL);
+	lv_label_set_text(title, "Title Label");
+	lv_obj_align(title, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);  /*Align to the top*/
+
+	/*Create anew style*/
+	static lv_style_t style_txt;
+	lv_style_copy(&style_txt, &lv_style_plain);
+	style_txt.text.font = &lv_font_dejavu_20;
+	style_txt.text.letter_space = 2;
+	style_txt.text.line_space = 1;
+	style_txt.text.color = LV_COLOR_HEX(0x606060);
+
+	/*Create a new label*/
+	lv_obj_t * txt = lv_label_create(lv_scr_act(), NULL);
+	lv_obj_set_style(txt, &style_txt);                    /*Set the created style*/
+	lv_label_set_long_mode(txt, LV_LABEL_LONG_BREAK);     /*Break the long lines*/
+	lv_label_set_recolor(txt, true);                      /*Enable re-coloring by commands in the text*/
+	lv_label_set_align(txt, LV_LABEL_ALIGN_CENTER);       /*Center aligned lines*/
+	lv_label_set_text(txt, "Align lines to the middle\n\n"
+	                       "#000080 Re-color# #0000ff words of# #6666ff the text#\n\n"
+	                       "If a line become too long it can be automatically broken into multiple lines");
+	lv_label_set_text(txt, NULL);
+	lv_obj_set_width(txt, 300);                           /*Set a width*/
+	lv_obj_align(txt, NULL, LV_ALIGN_CENTER, 0, 20);      /*Align to center*/
 
 	while (true) {
 
@@ -30,6 +70,10 @@ void opcontrol() {
 
     master.print(1, 0, "potentiameter: %d", potentiameter.get_value());
 		master.print(2, 0, "flipper: %8.2f", claw.get_position());
+		std::cout << "claw " << claw.get_position() <<"\n";
+		std::cout << "lift " << lift.get_position() <<"\n";
+		sprintf(mytext, "potentiameter: %8.2f", claw.get_position());
+		lv_label_set_text(txt, mytext);
 
 
 // ballintake

@@ -1,5 +1,5 @@
 #include "main.h"
-#include "motor.hpp"
+#include "config.hpp"
 #include <string>
 
 pros::Controller master  (pros::E_CONTROLLER_MASTER);
@@ -19,7 +19,7 @@ pros::ADIDigitalIn limitswitchball(4);
 
 
 
-int automode=9;
+int automode=8;
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
@@ -57,7 +57,7 @@ void initialize() {
 
   /*Create a button descriptor string array*/
   static const char * btnm_map[] = {"redfront", "bluefront", "redback", "blueback", "\n",
-                             "skill 1",  "skill 2", "no auto" "",
+                             "skill 1",  "skill 2", "no auto" ""
                             };
 
   /*Create a default button matrix*/

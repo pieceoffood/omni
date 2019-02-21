@@ -76,15 +76,77 @@ void opcontrol() {
 		lv_label_set_text(txt, mytext);
 
 
-// ballintake
-    // one press start spinning; press again stop spinning
-    intakecount += (master.get_digital(DIGITAL_R1)); // count how many time of button is pressed
-    if (intakecount % 2 ==1)  {
-      ballintake.move_velocity(200);
-    } else {
-      ballintake.move_velocity(0);
-    };
+		int left  = master.get_analog (ANALOG_LEFT_Y);
+		int right = master.get_analog (ANALOG_RIGHT_Y);
 
-		pros::delay(200);
+    // press DIGITAL_DOWN to reset zero
+		if ( master.get_digital(DIGITAL_DOWN))  {
+			leftfront.tare_position ( );
+			rightfront.tare_position ( );
+		}
+
+		// chasis
+			leftfront.move  (left);
+			leftback.move   (left);
+			rightfront.move (right);
+			rightback.move  (right);
+
+		//lift
+    if (limitswitch.get_value()==1)
+    {
+      lift.tare_position();
+    }
+		if (master.get_digital (DIGITAL_R1) && lift.get_position()<3056)
+		{
+      lift.get_position();
+			lift.move_velocity  (200);
+    }		else if (master.get_digital (DIGITAL_R2) && limitswitch.get_value()==0)
+		{
+			lift.move_velocity  (-150);
+    }		else
+		{
+			lift.move_velocity  (0);
+		}
+
+		// claw only activat during 1700- 2410
+		// There is overshoot issue and this range 1850 - 2350 is right for coarse stop
+		if (master.get_digital (DIGITAL_L1) && potentiameter.get_value()>1700)
+		{
+
+			claw.move_velocity  (-200); // up/
+
+    }		else if (master.get_digital (DIGITAL_L2) && potentiameter.get_value()<2600)
+		{
+			claw.move_velocity  (200); // down
+    }		else
+		{
+			claw.move_velocity  (0);
+    }
+
+		//ballintake
+		if (partner.get_digital(DIGITAL_A)) 	{
+			ballintake.move_velocity  (200);
+    }		else
+		if (master.get_digital (DIGITAL_Y))		{
+			ballintake.move_velocity  (-200);
+		}		else
+		{
+			ballintake.move_velocity  (0);
+    }
+
+		//catapult
+		if (limitswitchball.get_value()==1) {
+      catapult.tare_position ( );  // reset catapult encoder position to zero
+    }
+		if (partner.get_digital (DIGITAL_X))
+		{
+			catapult.move_relative  (1000,100);// to loading position
+    }		else if (partner.get_digital(DIGITAL_DOWN))
+		{
+			catapult.move_velocity  (100);
+    } else {
+			catapult.move_velocity  (0);
+		}
+	pros::delay (10);
 	}
 }

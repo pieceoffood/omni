@@ -16,29 +16,32 @@ pros::ADIDigitalIn limitswitch  (1);
 pros::ADIAnalogIn potentiameter (2);
 pros::ADIAnalogIn ballshooterp  (3);
 pros::ADIDigitalIn limitswitchball(4);
-
-
-
 int automode=8;
-redblue side;
+redblue site;
+frontback isfront;
+
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
     printf("Button: %s released\n", txt);
     if (strcmp(txt, "redfront"))  {
       automode=1;
       side=red;
+      isfront=front;
     }
     else if (strcmp(txt, "bluefront")) {
       automode=2;
       side=blue;
+      isfront=front;
     }
     else if (strcmp(txt, "redback")) {
       automode=3;
       side=red;
+      isfront=back;
     }
     else if (strcmp(txt, "bluefront")) {
       automode=4;
       side=blue;
+      isfront=back;
     }
     else if (strcmp(txt, "skill 1"))   automode=5;
     else if (strcmp(txt, "skill 2"))   automode=6;
@@ -108,13 +111,7 @@ void initialize() {
   lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_REL, &style_btn_rel);
   lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_TGL_PR, &style_btn_pr);
 
-
-
-
   master.print(0, 0, "automode: %d", automode);
-
-//automode = lv_sw_get_state(sw1) + lv_sw_get_state(sw2)*2;
-//master.print(0, 0, "autoIn0: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
 
 }
 
@@ -124,18 +121,6 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-/*
-	while(1){
-		//lv_btn_set_action(btn1, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn2, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, btn_click_action);
-		//lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, btn_click_action);
-		automode = lv_sw_get_state(sw1) + lv_sw_get_state(sw2)*2;
-		master.print(0, 0, "autoSW: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-	  pros::delay(500);
-	}
-	master.print(0, 0, "autoSW2: %d, %d", lv_sw_get_state(sw1),lv_sw_get_state(sw2));
-*/
 }
 
 /**

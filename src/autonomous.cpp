@@ -63,7 +63,9 @@
 
 
 void autonomous() {
-  redblue side=red;
+
+  redblue side = red; // red or blude, make turn in opposite when on blue side
+  frontback isfront = front; // front or back
   switch (automode)  {
     case 1: {
       side=red;
@@ -90,7 +92,103 @@ void autonomous() {
     default : {
 
     }
-
   }
+
+
+  // automode value
+  // 1 red front
+  // 2 blue front
+  // 3 red back
+  // 4 blue back
+  // 5 skill program 1
+  // 6 skill program 2
+  switch(automode)
+  {
+    case 1:
+    {
+      side=red;
+      isfront=front;
+      break;
+    }
+    case 2:
+    {
+      side=blue;
+      isfront=front;
+      break;
+    }
+    case 3:
+    {
+      side=red;
+      isfront=back;
+      break;
+    }
+    case 4:
+    {
+      side=blue;
+      isfront=back;
+      break;
+    }
+    case 5: // skill programe 1
+    {
+      // add code here
+    }
+    case 6: // skill programe 2
+    {
+      // add code here
+    }
+    default:
+    {
+      side=red;
+      isfront=front;
+      break;
+    }
+  }
+
+  // four automode program
+  switch (isfront) {
+    case front : { //front
+      if (side==blue) {
+        master.print   (0, 0, "bluefront: %d", automode);
+      } else {
+         master.print  (0, 0, "redfront:  %d", automode);
+      }
+      moving (-45, 100); // move back to hit the low flag
+
+      moving (70, 100); //move forwards
+      turning   (1*side, 100); //turn left
+      pros::delay (1000);
+
+      moving (-62, 100); //park on the platform
+      break;
+      }
+
+    case back : { //back
+      if (side==blue) {
+        master.print(0, 0, "blueback:  %d", automode);
+      } else {
+        master.print(0, 0, "redback:   %d", automode);
+      }
+
+      moving (-35, 100); //move forwards
+
+      ballintake.move (200); //get ball under cap
+      pros::delay  (1500);
+      ballintake.move (0);
+
+      moving (5, 100); //forwards
+
+      turning     (-1*side, 100); //turn right
+
+
+      moving     (-42, 100);
+      break;
+    }
+    default : {
+      break;
+    }
+  }
+
+  master.clear();
+
 
 }

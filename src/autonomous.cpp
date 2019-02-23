@@ -1,6 +1,7 @@
 #include "main.h"
 #include "config.hpp"
 #include "cmath"
+#include <fstream>
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -63,6 +64,8 @@
 
 
 void autonomous() {
+  std::ofstream LogFile;
+  LogFile.open("/usd/logfile.txt");
 
   redblue side = red; // red or blude, make turn in opposite when on blue side
   frontback isfront = front; // front or back
@@ -189,6 +192,7 @@ void autonomous() {
   }
 
   master.clear();
-
+  LogFile<< " automode,"  << automode << ","<< leftfront.get_position() << "\n" ;
+  LogFile.close();
 
 }

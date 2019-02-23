@@ -84,6 +84,9 @@ void opcontrol() {
 
 		left  = master.get_analog (ANALOG_LEFT_Y);
 		right = master.get_analog (ANALOG_RIGHT_Y);
+		printf("left %d \n", left);// not work
+		printf("right %d \n", right); // nothing happen
+
 
     // press DIGITAL_DOWN to reset zero
 		if ( master.get_digital(DIGITAL_DOWN))  {

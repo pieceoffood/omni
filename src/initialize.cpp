@@ -17,7 +17,7 @@ pros::ADIAnalogIn potentiameter (2);
 pros::ADIAnalogIn ballshooterp  (3);
 pros::ADIDigitalIn limitswitchball(4);
 int automode=8;
-redblue site;
+redblue side;
 frontback isfront;
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
@@ -72,7 +72,7 @@ void initialize() {
 
   /*Create a button descriptor string array*/
   static const char * btnm_map[] = {"redfront", "bluefront", "redback", "blueback", "\n",
-                             "skill 1",  "skill 2", "no auto" ""
+                             "skill 1",  "skill 2", "no auto", ""
                             };
 
   /*Create a default button matrix*/
@@ -89,7 +89,7 @@ void initialize() {
   lv_btnm_set_action(btnm1, btnm_action);
   lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BG, &style_bg);
   lv_obj_set_size(btnm1, LV_HOR_RES, LV_VER_RES / 2);
-  lv_btnm_set_toggle(btnm1, true, 0);
+  lv_btnm_set_toggle(btnm1, true, 6);
 
   /*Create a new style for the button matrix back ground*/
   /*Create 2 button styles*/

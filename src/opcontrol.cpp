@@ -39,20 +39,22 @@ void opcontrol() {
 	lv_scr_load(scr);                                   /*Load the screen*/
 
 	lv_obj_t * title = lv_label_create(lv_scr_act(), NULL);
-	lv_label_set_text(title, "Title Label");
+	lv_label_set_text(title, "Debug");
 	lv_obj_align(title, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);  /*Align to the top*/
 
 	/*Create anew style*/
+	/*
 	static lv_style_t style_txt;
 	lv_style_copy(&style_txt, &lv_style_plain);
 	style_txt.text.font = &lv_font_dejavu_20;
 	style_txt.text.letter_space = 2;
 	style_txt.text.line_space = 1;
 	style_txt.text.color = LV_COLOR_HEX(0x606060);
+	*/
 
 	/*Create a new label*/
 	lv_obj_t * txt = lv_label_create(lv_scr_act(), NULL);
-	lv_obj_set_style(txt, &style_txt);                    /*Set the created style*/
+	//lv_obj_set_style(txt, &style_txt);                    /*Set the created style*/
 	lv_label_set_long_mode(txt, LV_LABEL_LONG_BREAK);     /*Break the long lines*/
 	lv_label_set_recolor(txt, true);                      /*Enable re-coloring by commands in the text*/
 	lv_label_set_align(txt, LV_LABEL_ALIGN_CENTER);       /*Center aligned lines*/
@@ -68,11 +70,15 @@ void opcontrol() {
 
 		// Print to the 0 -2 line of controller screen [0-14]
 
-    master.print(1, 0, "potentiameter: %d", potentiameter.get_value());
+    master.print(1, 0, "pote: %d", potentiameter.get_value());
 		master.print(2, 0, "flipper: %8.2f", claw.get_position());
 		std::cout << "claw " << claw.get_position() <<"\n";
 		std::cout << "lift " << lift.get_position() <<"\n";
-		sprintf(mytext, "potentiameter: %8.2f", claw.get_position());
+		sprintf(mytext, "potentiameter: %d \n lift: %8.2f\n arm: %8.2f\n lf:%8.2f",
+		       potentiameter.get_value(),
+	         lift.get_position(),
+				   catapult.get_position(),
+				 leftfront.get_position());
 		lv_label_set_text(txt, mytext);
 
 

@@ -32,7 +32,7 @@ void opcontrol() {
 	int intakecount = 0; // count how many time of button is pressed
   int left ;
   int right ;
-	master.print(0, 0, "automode %d", automode);
+	master.clear();
 
 	/*Create a screen*/
 	lv_obj_t * scr = lv_obj_create(NULL, NULL);
@@ -82,8 +82,8 @@ void opcontrol() {
 		lv_label_set_text(txt, mytext);
 
 
-		int left  = master.get_analog (ANALOG_LEFT_Y);
-		int right = master.get_analog (ANALOG_RIGHT_Y);
+		left  = master.get_analog (ANALOG_LEFT_Y);
+		right = master.get_analog (ANALOG_RIGHT_Y);
 
     // press DIGITAL_DOWN to reset zero
 		if ( master.get_digital(DIGITAL_DOWN))  {

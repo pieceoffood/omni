@@ -74,8 +74,11 @@ void opcontrol() {
 		master.print(2, 0, "flipper: %8.2f", claw.get_position());
 		std::cout << "claw " << claw.get_position() <<"\n";
 		std::cout << "lift " << lift.get_position() <<"\n";
-		sprintf(mytext, "potentiameter: %d \n lift: %8.2f\n arm: %8.2f\n lf:%8.2f",
-		       potentiameter.get_value(),
+		sprintf(mytext, "potentiameter: %d claw %8.2f \n"
+		                "lift: %8.2f\n"
+										"catapult: %8.2f\n"
+										"lf:%8.2f",
+		       potentiameter.get_value(),claw.get_position(),
 	         lift.get_position(),
 				   catapult.get_position(),
 				 leftfront.get_position());

@@ -17,36 +17,37 @@ pros::ADIAnalogIn potentiameter (2);
 pros::ADIAnalogIn ballshooterp  (3);
 pros::ADIDigitalIn limitswitchball(4);
 int automode=8;
-redblue side;
-frontback isfront;
+//redblue side;
+//frontback isfront;
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
     printf("Button: %s released\n", txt);
-    if (strcmp(txt, "redfront"))  {
+    if (strcmp(txt, "redfront")==0)  {
       automode=1;
-      side=red;
-      isfront=front;
+      //side=red;
+      //isfront=front;
     }
-    else if (strcmp(txt, "bluefront")) {
+    else if (strcmp(txt, "bluefront")==0) {
       automode=2;
-      side=blue;
-      isfront=front;
+      //side=blue;
+      //isfront=front;
     }
-    else if (strcmp(txt, "redback")) {
+    else if (strcmp(txt, "redback")==0) {
       automode=3;
-      side=red;
-      isfront=back;
+      //side=red;
+      //isfront=back;
     }
-    else if (strcmp(txt, "bluefront")) {
+    else if (strcmp(txt, "blueback")==0) {
       automode=4;
-      side=blue;
-      isfront=back;
+      //side=blue;
+      //isfront=back;
     }
-    else if (strcmp(txt, "skill 1"))   automode=5;
-    else if (strcmp(txt, "skill 2"))   automode=6;
-    else if (strcmp(txt, "no auto"))   automode=7;
+    else if (strcmp(txt, "skill 1")==0)   automode=5;
+    else if (strcmp(txt, "skill 2")==0)   automode=6;
+    else if (strcmp(txt, "no auto")==0)   automode=7;
     else automode=8;
+    printf("%s automode %d\n", txt,automode);
     return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
 
@@ -111,7 +112,7 @@ void initialize() {
   lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_REL, &style_btn_rel);
   lv_btnm_set_style(btnm1, LV_BTNM_STYLE_BTN_TGL_PR, &style_btn_pr);
 
-  master.print(0, 0, "automode: %d", automode);
+  //master.print(0, 0, "auto is : %d", automode);
 
 }
 

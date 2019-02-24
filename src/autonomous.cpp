@@ -43,6 +43,8 @@
 
    while ( error>0 ) {
      pros::delay(3);
+     error=fabs(ticks) - fabs(leftfront.get_position()-startpoint);
+     printf("move error %8.2f\n", error);
    }
    pros::delay(10);
  }
@@ -58,6 +60,8 @@
 
    while ( error>0 ) {
      pros::delay(3);
+     error=fabs(ticks) - fabs(leftfront.get_position()-startpoint);
+     printf("tturn error %8.2f\n", error);
    }
    pros::delay(10);
  }
@@ -67,36 +71,8 @@ void autonomous() {
   std::ofstream LogFile;
   LogFile.open("/usd/logfile.txt");
 
-  redblue side = red; // red or blude, make turn in opposite when on blue side
-  frontback isfront = front; // front or back
-  switch (automode)  {
-    case 1: {
-      side=red;
-      basemovement(12,100);
-      basemovement(-12,100);
-      break;
-    }
-    case 2: {
-      side=blue;
-      basemovement(-12,100);
-      break;
-    }
-
-    case 3:  {
-      side=red;
-      turning(1*side, 150);//
-      break;
-    }
-    case 4: {
-      side=blue;
-      turning(1*side, 150); //
-      break;
-    }
-    default : {
-
-    }
-  }
-
+  redblue side ; // red or blude, make turn in opposite when on blue side
+  frontback isfront ; // front or back
 
   // automode value
   // 1 red front
@@ -134,62 +110,99 @@ void autonomous() {
     case 5: // skill programe 1
     {
       // add code here
+      break;
     }
     case 6: // skill programe 2
     {
       // add code here
+      break;
     }
     default:
     {
-      side=red;
-      isfront=front;
       break;
     }
   }
+  printf("automode:%d,side: %d,front: %d\n",automode, side, isfront);
 
-  // four automode program
-  switch (isfront) {
-    case front : { //front
-      if (side==blue) {
-        master.print   (0, 0, "bluefront: %d", automode);
-      } else {
-         master.print  (0, 0, "redfront:  %d", automode);
+  master.print(0, 0, "autois %d", automode);
+  if (automode>=1 && automode <=4 ) {
+    master.clear();
+    switch (isfront) {
+      case front : { //front
+        if (side==blue) {
+          master.print   (0, 0, "bluefront: %d%d%d", automode, blue, isfront);
+        } else {
+           master.print  (0, 0, "redfront:  %d%d%d", automode, blue, isfront);
+        }
+
+        moving (-45,100); // move back to hit the low flag
+        pros::delay (10);
+
+        moving (70, 100); //move forwards
+
+        turning   (1*side, 100); //turn left
+        pros::delay (10);
+
+        moving (-62, 150); //park on the platform
+
+        break;
+
       }
-      moving (-45, 100); // move back to hit the low flag
 
-      moving (70, 100); //move forwards
-      turning   (1*side, 100); //turn left
-      pros::delay (1000);
+      case back : { //back
+        if (side==red) {
 
-      moving (-62, 100); //park on the platform
-      break;
+          master.print(0, 0, "blueback:  %d%d%d", automode, blue, isfront);
+        } else {
+          master.print(0, 0, "redback:   %d%d%d", automode, blue, isfront);
+        }
+
+        moving (-35, 100); //move forwards
+
+        ballintake.move (200); //get ball under cap
+        ballintake.move (0);
+
+        moving (5, 50); //forwards
+
+        turning     (-1*side, 50); //turn right
+        pros::delay  (1500);
+
+        moving     (-42, 150); //park on the platoform
+
+        break;
       }
-
-    case back : { //back
-      if (side==blue) {
-        master.print(0, 0, "blueback:  %d", automode);
-      } else {
-        master.print(0, 0, "redback:   %d", automode);
+      default : {
+        master.clear();
+        break;
       }
-
-      moving (-35, 100); //move forwards
-
-      ballintake.move (200); //get ball under cap
-      pros::delay  (1500);
-      ballintake.move (0);
-
-      moving (5, 100); //forwards
-
-      turning     (-1*side, 100); //turn right
-
-
-      moving     (-42, 100);
-      break;
+     }
     }
-    default : {
-      break;
+  else  if (automode == 5)
+    {
+      //skill 1 program
+      master.clear();
+      master.print(0, 0, "automode:  %d%d%d", automode, blue, isfront);
+      moving (36, 100);
+      claw.move_absolute(750,200); // close claw
+      pros::delay(500);
+      lift.move_absolute(150, 200);// lift up a little
+      moving (-36, 100);
+      lift.move_absolute(0, 100);// lift down
+      pros::delay(500);
+      claw.move_absolute(0,200); // claw open
+      pros::delay(500);
+      lift.move_absolute(450, 200);
+      pros::delay(500);
+      lift.move_absolute(0, 200);
+      pros::delay(500);
+
     }
-  }
+  else if (automode ==6 )
+    {
+      //skill 2 program
+      master.clear();
+      master.print(0, 0, "automode:  %d%d%d", automode, blue, isfront);
+    }
 
   master.clear();
   LogFile<< " automode,"  << automode << ","<< leftfront.get_position() << "\n" ;

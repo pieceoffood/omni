@@ -208,4 +208,24 @@ void autonomous() {
   LogFile<< " automode,"  << automode << ","<< leftfront.get_position() << "\n" ;
   LogFile.close();
 
+
+
+  //littlvgl screen
+  lv_obj_t * txt = lv_label_create(lv_scr_act(), NULL);
+	//lv_obj_set_style(txt, &style_txt);                    /*Set the created style*/
+	lv_label_set_long_mode(txt, LV_LABEL_LONG_BREAK);     /*Break the long lines*/
+	lv_label_set_recolor(txt, true);                      /*Enable re-coloring by commands in the text*/
+	lv_label_set_align(txt, LV_LABEL_ALIGN_CENTER);       /*Center aligned lines*/
+	lv_label_set_text(txt, NULL);
+	lv_obj_set_width(txt, 300);                           /*Set a width*/
+	lv_obj_align(txt, NULL, LV_ALIGN_CENTER, 0, 20);      /*Align to center*/
+  char autotext[64];
+	sprintf(autotext, "automode: %d\n"
+		                "side: %d\n"
+										"front/back %d\n"
+										,
+		       automode, side, isfront
+         );
+	lv_label_set_text(txt, autotext);
+
 }

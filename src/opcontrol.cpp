@@ -69,19 +69,16 @@ void opcontrol() {
 
 
 		// Print to the 0 -2 line of controller screen [0-14]
-
-    master.print(1, 0, "pote: %d", potentiameter.get_value());
-		master.print(2, 0, "flipper: %8.2f", claw.get_position());
 		std::cout << "claw " << claw.get_position() <<"\n";
 		std::cout << "lift " << lift.get_position() <<"\n";
-		sprintf(mytext, "potentiameter: %d claw %8.2f \n"
-		                "lift: %8.2f\n"
-										"catapult: %8.2f\n"
-										"lf:%8.2f",
-		       potentiameter.get_value(),claw.get_position(),
-	         lift.get_position(),
-				   catapult.get_position(),
-				 leftfront.get_position());
+		sprintf(mytext, "claw potentiameter: %d\n"
+										"lift: %8.2f, set zero:%d\n"
+										"catapult: %8.2f, set zero: %d\n"
+										"leftfront:%8.2f",
+					 potentiameter.get_value(),
+					 lift.get_position(), limitswitch.get_value(),
+					 catapult.get_position(), limitswitchball.get_value(),
+					 leftfront.get_position());
 		lv_label_set_text(txt, mytext);
 
 
@@ -136,7 +133,7 @@ void opcontrol() {
     }
 
 		//ballintake
-		if (partner.get_digital(DIGITAL_A)) 	{
+		if (master.get_digital(DIGITAL_A)) 	{
 			ballintake.move_velocity  (200);
     }		else
 		if (master.get_digital (DIGITAL_Y))		{
@@ -150,15 +147,24 @@ void opcontrol() {
 		if (limitswitchball.get_value()==1) {
       catapult.tare_position ( );  // reset catapult encoder position to zero
     }
-		if (partner.get_digital (DIGITAL_X))
-		{
-			catapult.move_relative  (1000,100);// to loading position
-    }		else if (partner.get_digital(DIGITAL_DOWN))
+
+		if (master.get_digital (DIGITAL_X))
 		{
 			catapult.move_velocity  (100);
-    } else {
+    }		else
+		if (master.get_digital(DIGITAL_B))
+    {
+      while (limitswitchball.get_value()==1) {
+				catapult.move_velocity  (100);
+				catapult.tare_position ( );
+				pros::delay(3);
+			}
+      catapult.move_absolute(2090, 100);
+		}	 else
+		{
 			catapult.move_velocity  (0);
-		}
+    }
+
 	pros::delay (10);
 	}
 }

@@ -71,8 +71,8 @@ void autonomous() {
   std::ofstream LogFile;
   LogFile.open("/usd/logfile.txt");
 
-  redblue side ; // red or blude, make turn in opposite when on blue side
-  frontback isfront ; // front or back
+  redblue side = red ; // red or blude, make turn in opposite when on blue side
+  frontback isfront = front ; // front or back
 
   // automode value
   // 1 red front
@@ -122,9 +122,10 @@ void autonomous() {
       break;
     }
   }
-  printf("automode:%d,side: %d,front: %d\n",automode, side, isfront);
+  
+  printf("automode: %d, side: %d, front: %d\n",automode, side, isfront);
 
-  master.print(0, 0, "autois %d", automode);
+  master.print(0, 0, "auto is %d", automode);
   if (automode>=1 && automode <=4 ) {
     master.clear();
     switch (isfront) {

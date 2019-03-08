@@ -2,7 +2,7 @@
 #include "config.hpp"
 #include <string>
 #include "menu.hpp"
-
+//Unlike global functions in C, access to static functions is restricted to the file where they are declared
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
     printf("Button: %s released\n", txt);

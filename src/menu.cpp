@@ -1,6 +1,7 @@
 #include "main.h"
 #include "config.hpp"
 #include <string>
+#include "menu.hpp"
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {

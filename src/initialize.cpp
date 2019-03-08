@@ -1,6 +1,7 @@
 #include "main.h"
 #include "config.hpp"
 #include <string>
+#include "menu.hpp"
 
 pros::Controller master  (pros::E_CONTROLLER_MASTER);
 pros::Controller partner (pros::E_CONTROLLER_PARTNER);
@@ -19,6 +20,7 @@ pros::ADIDigitalIn limitswitchball(4);
 int automode=8;
 //redblue side;
 //frontback isfront;
+
 
 static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
 {
@@ -50,7 +52,6 @@ static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
     printf("%s automode %d\n", txt,automode);
     return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
 }
-
 
 
 /**
